@@ -50,7 +50,8 @@ version = {attr = "pnmr_chi_gen.__version__.__version__"}
 version_variables = ["src/pnmr_chi_gen/__version__.py:__version__"]
 branch = "main"
 commit_parser = "conventional"
-build_command = "python -m build --sdist --wheel ."
+allow_zero_version = true
+build_command = "python -m pip install build && python -m build --sdist --wheel ."
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): {version}"
 
