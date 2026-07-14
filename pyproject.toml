@@ -1,0 +1,75 @@
+# Project build, packaging, and tooling configuration.
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pnmr-chi-gen"
+dynamic = ["version"]
+description = "A standalone generator of susceptibility tensor series for pNMR simulations"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Ernest Borysenko" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.0",
+    "pytest>=8.0.0",
+    "python-semantic-release>=9.0.0",
+    "ruff>=0.5.0",
+]
+
+[project.scripts]
+pnmr_chi_gen = "pnmr_chi_gen.cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/Mephistos-ML/pnmr-chi-gen"
+Repository = "https://github.com/Mephistos-ML/pnmr-chi-gen"
+Issues = "https://github.com/Mephistos-ML/pnmr-chi-gen/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pnmr_chi_gen.__version__.__version__"}
+
+[tool.semantic_release]
+version_variables = ["src/pnmr_chi_gen/__version__.py:__version__"]
+branch = "main"
+commit_parser = "conventional"
+build_command = "python -m build --sdist --wheel ."
+changelog_file = "CHANGELOG.md"
+commit_message = "chore(release): {version}"
+
+[tool.semantic_release.remote]
+type = "github"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+markers = [
+    "integration: end-to-end example/CLI integration tests (may be slow)",
+    "smoke: fast smoke tests for CLI/entrypoints",
+    "unit: fast unit tests with no subprocess, no network, minimal IO",
+]
+
+log_cli = true
+log_cli_level = "INFO"
